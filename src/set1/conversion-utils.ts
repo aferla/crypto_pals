@@ -1,3 +1,15 @@
+export function hexToBase64String(hexInput: string): string {
+  return Buffer.from(hexInput, "hex").toString("base64");
+}
+
+export function base64ToHexString(base64Input: string): string {
+  return Buffer.from(base64Input, "base64").toString("hex");
+}
+
+export function hexToAsciiString(input: string): string {
+  return Buffer.from(input, "hex").toString();
+}
+
 export function bytesToString(bytes: number[]): string {
   return bytes.map((byte) => String.fromCharCode(byte)).join("");
 }
