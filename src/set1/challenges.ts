@@ -1,6 +1,10 @@
 import { singleByteXorCypher, XorDecruptResult } from "./xor-cypher-utils";
 import { hammingDistance } from "./xor-cypher-utils";
 
+export function breakRepatingXOR(input: number[]): string {
+  return "";
+}
+
 export function findSingleCharXor(lines: string[]): XorDecruptResult {
   const results = lines.map((line) => singleByteXorCypher(Buffer.from(line)));
 
@@ -14,6 +18,19 @@ export function findSingleCharXor(lines: string[]): XorDecruptResult {
   return best;
 }
 
+export function lowestDistanceGivenKeysize(
+  input: Buffer,
+  keySize: number
+): number {
+  const chunked = chunkArrayBuffer(input, keySize).slice(0, 4);
+  let distance = 0;
+  for (let i = 0; i < chunked.length - 1; i += 2) {
+    distance += hammingDistance(chunked[i], chunked[i + 1]);
+  }
+  // const distance = hammingDistance(chunked[0], chunked[1]);
+  return distance / chunkArrayBuffer.length;
+}
+
 export function findKeySize(input: Buffer): [number, number][] {
   const keyLengthResults: [number, number][] = [];
   const maxKeySize = 41;
@@ -22,32 +39,8 @@ export function findKeySize(input: Buffer): [number, number][] {
     keyLengthResults.push([keySize, score]);
   }
   keyLengthResults.sort((x, y) => x[1] - y[1]);
-  const print = keyLengthResults.map((entry) => `* ${entry}`).join("\n");
-  console.log(print);
 
-  return keyLengthResults.slice(0, 4);
-}
-
-export function breakRepatingXOR(input: number[]): string {
-  return "";
-}
-
-function lowestDistanceGivenKeysize(input: Buffer, keySize: number): number {
-  //   const chunkedArray = chunkArray(input, keySize,;
-
-  let distance = 0;
-  if (keySize === 11) {
-    console.log(`*Yo ${input.slice(0, 7)}`);
-  }
-  const chunked = chunkArrayBuffer(input, keySize);
-  for (let i = 0; i < 4; i++) {
-    const firstSlice = chunked[i];
-    const secondSlice = chunked[i + 1];
-
-    distance += hammingDistance(firstSlice, secondSlice);
-  }
-  distance /= 4;
-  return distance / keySize;
+  return keyLengthResults.slice(0, 5);
 }
 
 export function chunkArrayBuffer<T>(

@@ -13,7 +13,6 @@ export function repeatedKeyXor(input: Buffer, key: string): Buffer {
   const cypher = key
     .repeat(Math.ceil(input.length / key.length))
     .substring(0, input.length);
-  console.log(`Cypher is ${cypher}`);
   return xor(input, Buffer.from(cypher, "ascii"));
 }
 

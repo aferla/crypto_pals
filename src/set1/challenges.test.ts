@@ -5,7 +5,7 @@ import {
   base64ToHexString,
   hexToAsciiString,
 } from "./conversion-utils";
-import { findSingleCharXor } from "./challenges";
+import { findSingleCharXor, findKeySize } from "./challenges";
 
 import {
   xor,
@@ -100,12 +100,30 @@ describe(`Challenge 6`, () => {
     ).toEqual(37);
   });
 
-  // it(`temp`, () => {
-  //   const buff = fs.readFileSync("./data/set_challenge6_plain.txt");
-  //   const encrypted = repeatedKeyXor(buff, "DONKEY");
-  //   fs.writeFileSync(
-  //     "./data/set1_challenge6_encrypted_6.txt",
-  //     encrypted.toString("base64")
-  //   );
-  // });
+  it(`findKeySize should work wih a key of size 4`, () => {
+    const encrypted: string = fs
+      .readFileSync("./data/set1_challenge6_encrypted_4.txt", "utf-8")
+      .replace("\n", "");
+    const buffer = Buffer.from(encrypted, "base64");
+    const keySize = findKeySize(buffer);
+    expect(keySize.map((entry) => entry[0])).toContain(4);
+  });
+
+  it(`findKeySize should work wih a key of size 6`, () => {
+    const encrypted: string = fs
+      .readFileSync("./data/set1_challenge6_encrypted_4.txt", "utf-8")
+      .replace("\n", "");
+    const buffer = Buffer.from(encrypted, "base64");
+    const keySize = findKeySize(buffer);
+    expect(keySize.map((entry) => entry[0])).toContain(4);
+  });
+
+  it(`findKeySize should work wih a key of size 5`, () => {
+    const encrypted: string = fs
+      .readFileSync("./data/set1_challenge6_encrypted_5.txt", "utf-8")
+      .replace("\n", "");
+    const buffer = Buffer.from(encrypted, "base64");
+    const keySize = findKeySize(buffer);
+    expect(keySize.map((entry) => entry[0])).toContain(5);
+  });
 });
